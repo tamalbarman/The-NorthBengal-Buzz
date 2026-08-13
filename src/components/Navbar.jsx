@@ -63,7 +63,7 @@ const Navbar = () => {
           <img src="/assets/images/logo.png" alt="The Northbengal Buzz Logo" />
         </div>
         <div className="brand-text-block">
-          <span className="brand-title">The Northbengal Buzz</span>
+          <span className="brand-title">{SITE_CONFIG.name}</span>
           <span className="brand-tagline">
             <i className="fas fa-leaf text-green"></i> Travel & Himalayan Teas
           </span>
@@ -99,17 +99,6 @@ const Navbar = () => {
         >
           <i className={`fas ${theme === 'light' ? 'fa-moon' : 'fa-sun'}`}></i>
         </button>
-
-        <a
-          href={SITE_CONFIG.getWhatsAppUrl()}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="whatsapp-btn"
-          title="Chat on WhatsApp Business"
-        >
-          <i className="fab fa-whatsapp"></i>
-          <span>WhatsApp Us</span>
-        </a>
 
         <button
           type="button"

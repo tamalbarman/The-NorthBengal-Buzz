@@ -1,5 +1,34 @@
-# Logs
-logs
+# ==========================================
+# THE NORTHBENGAL BUZZ - GITIGNORE DEFINITIONS
+# ==========================================
+
+# Dependency directories
+node_modules/
+jspm_packages/
+web_modules/
+.pnpm-store/
+
+# Production build outputs
+dist/
+dist-ssr/
+build/
+out/
+*.esm.js
+
+# Cache & temporary build directories
+.vite/
+.cache/
+.parcel-cache/
+.eslintcache
+.stylelintcache
+*.tsbuildinfo
+
+# Deployment & host platform build directories
+.netlify/
+.vercel/
+
+# Logs & diagnostic data
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -7,40 +36,36 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# Diagnostic data
-.pnpm-debug.log*
-
-# Dependency directories
-node_modules/
-jspm_packages/
-web_modules/
-
-# Production build outputs
-dist/
-dist-ssr/
-build/
-*.esm.js
-
-# Environment and local secret files
+# Environment variables & local secrets
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 *.env
+!.env.example
 
-# Editor and IDE directories
+# IDE, Editor & Agent directories
 .vscode/*
 !.vscode/extensions.json
 !.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
 .idea/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+*.swp
 
-# OS temp files
+# AI Agent & Antigravity IDE artifacts
+.gemini/
+.agents/
+.system_generated/
+scratch/
+
+# Operating system metadata & temporary files
 .DS_Store
 .DS_Store?
 ._*
@@ -48,3 +73,6 @@ build/
 .Trashes
 ehthumbs.db
 Thumbs.db
+desktop.ini
+*.tmp
+*.bak
