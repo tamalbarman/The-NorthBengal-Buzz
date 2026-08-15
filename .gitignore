@@ -2,8 +2,9 @@
 # THE NORTHBENGAL BUZZ - GITIGNORE DEFINITIONS
 # ==========================================
 
-# Dependency directories
+# Dependency directories (Root & Backend Server)
 node_modules/
+server/node_modules/
 jspm_packages/
 web_modules/
 .pnpm-store/
@@ -22,6 +23,7 @@ out/
 .eslintcache
 .stylelintcache
 *.tsbuildinfo
+coverage/
 
 # Deployment & host platform build directories
 .netlify/
@@ -29,6 +31,7 @@ out/
 
 # Logs & diagnostic data
 logs/
+server/logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -43,6 +46,8 @@ lerna-debug.log*
 .env.test.local
 .env.production.local
 *.env
+server/.env
+server/*.env
 !.env.example
 
 # IDE, Editor & Agent directories

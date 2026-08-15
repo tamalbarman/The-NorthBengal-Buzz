@@ -4,11 +4,13 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import WhatsAppFAB from './components/WhatsAppFAB';
 import ScrollToTop from './components/ScrollToTop';
+import { CMSProvider } from './context/CMSContext';
 
 const HomePage = lazy(() => import('./pages/HomePage'));
 const AboutPage = lazy(() => import('./pages/AboutPage'));
 const PackagesPage = lazy(() => import('./pages/PackagesPage'));
 const BookPage = lazy(() => import('./pages/BookPage'));
+const AdminPage = lazy(() => import('./pages/AdminPage'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 const PageLoader = () => (
@@ -22,23 +24,26 @@ const PageLoader = () => (
 
 function App() {
   return (
-    <div className="app-container">
-      <ScrollToTop />
-      <Navbar />
-      <main className="main-content">
-        <Suspense fallback={<PageLoader />}>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/package" element={<PackagesPage />} />
-            <Route path="/book" element={<BookPage />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Suspense>
-      </main>
-      <Footer />
-      <WhatsAppFAB />
-    </div>
+    <CMSProvider>
+      <div className="app-container">
+        <ScrollToTop />
+        <Navbar />
+        <main className="main-content">
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/package" element={<PackagesPage />} />
+              <Route path="/book" element={<BookPage />} />
+              <Route path="/admin" element={<AdminPage />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
+        </main>
+        <Footer />
+        <WhatsAppFAB />
+      </div>
+    </CMSProvider>
   );
 }
 

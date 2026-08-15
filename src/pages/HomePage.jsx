@@ -1,16 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import QuickSearch from '../components/QuickSearch';
 import PackageCard from '../components/PackageCard';
 import TeaCard from '../components/TeaCard';
-import { packagesData } from '../data/packagesData';
+import RatingReviewSection from '../components/RatingReviewSection';
+import VisitorGallerySection from '../components/VisitorGallerySection';
+import CabEstimatorSection from '../components/CabEstimatorSection';
+import PermitGuideSection from '../components/PermitGuideSection';
+import AdventureAddonsSection from '../components/AdventureAddonsSection';
+import { useCMS } from '../context/CMSContext';
 import { teaProductsData } from '../data/teaProductsData';
 import { SITE_CONFIG } from '../config/siteConfig';
 
 const HomePage = () => {
+  const { packages } = useCMS();
   const [activeFilter, setActiveFilter] = useState('all');
 
-  const featuredPackages = packagesData.slice(0, 6);
+  useEffect(() => {
+    document.title = 'The Northbengal Buzz - Travel & Pure Himalayan Tea Store';
+  }, []);
+
+  const featuredPackages = packages.slice(0, 6);
   const filteredPackages = activeFilter === 'all'
     ? featuredPackages
     : featuredPackages.filter((p) => p.category === activeFilter);
@@ -31,7 +41,7 @@ const HomePage = () => {
             <p>Traverse pristine tea estates, mist-covered valleys, and towering Himalayan heights with curations from local experts.</p>
             <div className="btn-group">
               <Link to="/package" className="btn btn-primary">Discover Packages <i className="fas fa-arrow-right"></i></Link>
-              <a href="#tea-store" className="btn btn-accent"><i className="fas fa-mug-hot"></i> Buy Pure Tea</a>
+              <a href="#cabs" className="btn btn-accent"><i className="fas fa-taxi"></i> Book Cab Rental</a>
             </div>
           </div>
         </div>
@@ -73,6 +83,15 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* NEW SERVICE 1: NJP/Bagdogra Cab & Taxi Fare Estimator */}
+      <CabEstimatorSection />
+
+      {/* NEW SERVICE 2: Sikkim & Border Restricted Permit Assistance */}
+      <PermitGuideSection />
+
+      {/* NEW SERVICE 3: Outdoor Adventure & Activity Add-ons */}
+      <AdventureAddonsSection />
+
       {/* Authentic Tea Store */}
       <section className="tea-store-section" id="tea-store">
         <div className="section-title">
@@ -88,11 +107,17 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* Visitor Photo & Experience Gallery Section */}
+      <VisitorGallerySection />
+
+      {/* Guest Ratings & Reviews Moderated Section */}
+      <RatingReviewSection />
+
       {/* Direct WhatsApp Callout */}
       <section className="home-offer">
         <div className="content">
           <h3>Direct WhatsApp Booking & Inquiry</h3>
-          <p>Have questions about homestays, custom travel packages, or buying pure Darjeeling tea? Message the owners directly on WhatsApp Business.</p>
+          <p>Have questions about homestays, custom travel packages, cab rentals, or buying pure Darjeeling tea? Message the owners directly on WhatsApp Business.</p>
           <a
             href={SITE_CONFIG.getWhatsAppUrl('Hello The Northbengal Buzz! I have an enquiry regarding travel or tea products.')}
             target="_blank"

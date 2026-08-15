@@ -1,13 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import PackageCard from '../components/PackageCard';
-import { packagesData } from '../data/packagesData';
+import { useCMS } from '../context/CMSContext';
 
 const PackagesPage = () => {
+  const { packages } = useCMS();
   const [searchParams, setSearchParams] = useSearchParams();
   const activeCategory = searchParams.get('category') || 'all';
   const searchQuery = searchParams.get('search') || '';
   const selectedBudget = searchParams.get('budget') || 'all';
+
+  useEffect(() => {
+    document.title = 'Tour Packages | The Northbengal Buzz - Darjeeling, Sikkim & Dooars';
+  }, []);
 
   const updateFilters = (newCat, newSearch, newBudget) => {
     const params = new URLSearchParams();
@@ -21,14 +26,15 @@ const PackagesPage = () => {
     setSearchParams(params);
   };
 
-  const filteredPackages = packagesData.filter((pkg) => {
+  const filteredPackages = packages.filter((pkg) => {
     const matchesCategory = activeCategory === 'all' || pkg.category === activeCategory;
     const matchesSearch = !searchQuery || pkg.title.toLowerCase().includes(searchQuery.toLowerCase()) || pkg.description.toLowerCase().includes(searchQuery.toLowerCase());
     
     let matchesBudget = true;
-    if (selectedBudget === 'budget') matchesBudget = pkg.numericPrice < 10000;
-    else if (selectedBudget === 'standard') matchesBudget = pkg.numericPrice >= 10000 && pkg.numericPrice <= 25000;
-    else if (selectedBudget === 'luxury') matchesBudget = pkg.numericPrice > 25000;
+    const priceNum = pkg.numericPrice || 10000;
+    if (selectedBudget === 'budget') matchesBudget = priceNum < 10000;
+    else if (selectedBudget === 'standard') matchesBudget = priceNum >= 10000 && priceNum <= 25000;
+    else if (selectedBudget === 'luxury') matchesBudget = priceNum > 25000;
 
     return matchesCategory && matchesSearch && matchesBudget;
   });
@@ -73,6 +79,9 @@ const PackagesPage = () => {
             </button>
             <button className={`pill ${activeCategory === 'wildlife' ? 'active' : ''}`} onClick={() => updateFilters('wildlife')}>
               <i className="fas fa-paw"></i> Wildlife Safari
+            </button>
+            <button className={`pill ${activeCategory === 'sikkim' ? 'active' : ''}`} onClick={() => updateFilters('sikkim')}>
+              <i className="fas fa-gopuram"></i> Sikkim
             </button>
           </div>
 

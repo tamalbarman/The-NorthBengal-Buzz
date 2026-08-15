@@ -1,25 +1,28 @@
 import React, { useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { packagesData } from '../data/packagesData';
+import { useCMS } from '../context/CMSContext';
 import { SITE_CONFIG } from '../config/siteConfig';
 
-const packagePricesMap = packagesData.reduce((acc, p) => {
-  acc[p.id] = p;
-  return acc;
-}, {});
-
 const BookPage = () => {
+  const { packages } = useCMS();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
   const todayStr = new Date().toISOString().split('T')[0];
+
+  const packagePricesMap = packages.reduce((acc, p) => {
+    acc[p.id] = p;
+    return acc;
+  }, {});
+
+  const initialPkgId = searchParams.get('package') || (packages[0] ? packages[0].id : 'sandakphu');
 
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
     address: '',
-    destination: searchParams.get('package') || 'sandakphu',
+    destination: initialPkgId,
     guests: 2,
     arrival: '',
     leaving: ''
@@ -55,7 +58,7 @@ const BookPage = () => {
     return '';
   };
 
-  const selectedPkg = packagePricesMap[formData.destination] || packagesData[0];
+  const selectedPkg = packagePricesMap[formData.destination] || packages[0] || {};
   const basePrice = selectedPkg.numericPrice || 14999;
   const numGuests = Math.max(1, parseInt(formData.guests, 10) || 1);
   const totalCost = basePrice * numGuests;
@@ -84,7 +87,7 @@ const BookPage = () => {
   };
 
   const handleWhatsAppDirect = () => {
-    const msg = `Hello The Northbengal Buzz!\nI want to book a trip with you.\n\n*Name:* ${formData.name || 'Guest'}\n*Phone:* ${formData.phone || 'N/A'}\n*Destination:* ${selectedPkg.title}\n*Guests:* ${numGuests}\n*Dates:* ${formData.arrival || 'TBD'} to ${formData.leaving || 'TBD'}\n*Est. Total:* ₹${totalCost.toLocaleString('en-IN')}`;
+    const msg = `Hello The Northbengal Buzz!\nI want to book a trip with you.\n\n*Name:* ${formData.name || 'Guest'}\n*Phone:* ${formData.phone || 'N/A'}\n*Destination:* ${selectedPkg.title || 'Tour Package'}\n*Guests:* ${numGuests}\n*Dates:* ${formData.arrival || 'TBD'} to ${formData.leaving || 'TBD'}\n*Est. Total:* ₹${totalCost.toLocaleString('en-IN')}`;
     window.open(SITE_CONFIG.getWhatsAppUrl(msg), '_blank');
   };
 
@@ -168,9 +171,9 @@ const BookPage = () => {
                 <div className="inputBox">
                   <span><i className="fas fa-compass"></i> Select Destination :</span>
                   <select name="destination" value={formData.destination} onChange={handleInputChange} required>
-                    {packagesData.map((p) => (
+                    {packages.map((p) => (
                       <option key={p.id} value={p.id}>
-                        {p.title} (₹{p.numericPrice.toLocaleString('en-IN')} / person)
+                        {p.title} (₹{(p.numericPrice || 10000).toLocaleString('en-IN')} / person)
                       </option>
                     ))}
                   </select>
@@ -237,19 +240,19 @@ const BookPage = () => {
             <div className="summary-divider"></div>
 
             {/* Selected Package Visual Preview Thumbnail */}
-            {selectedPkg && (
+            {selectedPkg && selectedPkg.title && (
               <div className="selected-pkg-preview" style={{ marginBottom: '2rem' }}>
                 <div style={{ position: 'relative', height: '170px', borderRadius: 'var(--radius-sm)', overflow: 'hidden', marginBottom: '1.2rem', boxShadow: 'var(--shadow-sm)' }}>
                   <img src={selectedPkg.image} alt={selectedPkg.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
                   <span style={{ position: 'absolute', top: '10px', left: '10px', background: 'rgba(15,23,42,0.85)', backdropFilter: 'blur(6px)', color: '#ffffff', fontSize: '1.1rem', fontWeight: '700', padding: '0.4rem 1rem', borderRadius: '15px' }}>
-                    <i className={selectedPkg.tagIcon}></i> {selectedPkg.tag || 'Package'}
+                    <i className={selectedPkg.tagIcon || 'fas fa-tag'}></i> {selectedPkg.tag || 'Package'}
                   </span>
                   <span style={{ position: 'absolute', bottom: '10px', right: '10px', background: 'var(--accent-gold)', color: '#ffffff', fontSize: '1.3rem', fontWeight: '800', padding: '0.4rem 1.2rem', borderRadius: '20px' }}>
                     {selectedPkg.price}
                   </span>
                 </div>
-                <h4 style={{ fontSize: '1.8rem', color: 'var(--dark-navy)', fontWeight: '800', lineHeight: '1.3', marginBottom: '0.6rem' }}>{selectedPkg.title}</h4>
-                <div style={{ display: 'flex', gap: '1.5rem', fontSize: '1.3rem', color: 'var(--text-muted)' }}>
+                <h4 style={{ fontSize: '1.8rem', color: '#ffffff', fontWeight: '800', lineHeight: '1.3', marginBottom: '0.6rem' }}>{selectedPkg.title}</h4>
+                <div style={{ display: 'flex', gap: '1.5rem', fontSize: '1.3rem', color: 'rgba(255,255,255,0.7)' }}>
                   <span><i className="far fa-clock"></i> {selectedPkg.duration}</span>
                   <span><i className="fas fa-star text-yellow"></i> {selectedPkg.rating}</span>
                 </div>

@@ -37,6 +37,7 @@ const Footer = () => {
           <Link to="/package"><i className="fas fa-angle-right"></i> Tour Packages</Link>
           <a href="/#tea-store"><i className="fas fa-angle-right"></i> Pure Tea Store</a>
           <Link to="/book"><i className="fas fa-angle-right"></i> Book Trip</Link>
+          <Link to="/admin"><i className="fas fa-user-shield"></i> Admin CMS Portal</Link>
         </div>
 
         <div className="box">

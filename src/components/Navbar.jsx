@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
+import { useCMS } from '../context/CMSContext';
 import { SITE_CONFIG } from '../config/siteConfig';
 
 const Navbar = () => {
   const [menuActive, setMenuActive] = useState(false);
   const { theme, toggleTheme } = useTheme();
+  const { isAdminLoggedIn } = useCMS();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -37,21 +39,17 @@ const Navbar = () => {
     }
   };
 
-  const handleTeaStoreClick = (e) => {
+  const scrollToSection = (sectionId) => (e) => {
     e.preventDefault();
     closeMenu();
     if (location.pathname === '/') {
-      const el = document.getElementById('tea-store');
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth' });
-      }
+      const el = document.getElementById(sectionId);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
     } else {
       navigate('/');
       setTimeout(() => {
-        const el = document.getElementById('tea-store');
-        if (el) {
-          el.scrollIntoView({ behavior: 'smooth' });
-        }
+        const el = document.getElementById(sectionId);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
       }, 150);
     }
   };
@@ -80,11 +78,23 @@ const Navbar = () => {
         <Link to="/package" className={isActive('/package') ? 'active' : ''} onClick={closeMenu}>
           package
         </Link>
-        <a href="#tea-store" className="nav-tea-link" onClick={handleTeaStoreClick}>
+        <a href="#cabs" onClick={scrollToSection('cabs')}>
+          <i className="fas fa-taxi text-yellow"></i> cabs
+        </a>
+        <a href="#permits" onClick={scrollToSection('permits')}>
+          <i className="fas fa-file-contract text-teal"></i> permits
+        </a>
+        <a href="#activities" onClick={scrollToSection('activities')}>
+          <i className="fas fa-hiking text-green"></i> adventure
+        </a>
+        <a href="#tea-store" className="nav-tea-link" onClick={scrollToSection('tea-store')}>
           <i className="fas fa-leaf text-green"></i> tea store
         </a>
         <Link to="/book" className={isActive('/book') ? 'active' : ''} onClick={closeMenu}>
           book
+        </Link>
+        <Link to="/admin" className={`nav-admin-link ${isActive('/admin') ? 'active' : ''}`} onClick={closeMenu}>
+          <i className="fas fa-user-shield"></i> {isAdminLoggedIn ? 'Admin CMS' : 'Admin'}
         </Link>
       </nav>
 
