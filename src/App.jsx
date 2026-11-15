@@ -4,7 +4,9 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import WhatsAppFAB from './components/WhatsAppFAB';
 import ScrollToTop from './components/ScrollToTop';
+import AntiBotVerificationModal from './components/AntiBotVerificationModal';
 import { CMSProvider } from './context/CMSContext';
+import { AntiBotProvider } from './context/AntiBotContext';
 
 const HomePage = lazy(() => import('./pages/HomePage'));
 const AboutPage = lazy(() => import('./pages/AboutPage'));
@@ -25,24 +27,27 @@ const PageLoader = () => (
 function App() {
   return (
     <CMSProvider>
-      <div className="app-container">
-        <ScrollToTop />
-        <Navbar />
-        <main className="main-content">
-          <Suspense fallback={<PageLoader />}>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/about" element={<AboutPage />} />
-              <Route path="/package" element={<PackagesPage />} />
-              <Route path="/book" element={<BookPage />} />
-              <Route path="/admin" element={<AdminPage />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
-        </main>
-        <Footer />
-        <WhatsAppFAB />
-      </div>
+      <AntiBotProvider>
+        <div className="app-container">
+          <ScrollToTop />
+          <Navbar />
+          <main className="main-content">
+            <Suspense fallback={<PageLoader />}>
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/about" element={<AboutPage />} />
+                <Route path="/package" element={<PackagesPage />} />
+                <Route path="/book" element={<BookPage />} />
+                <Route path="/admin" element={<AdminPage />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
+          </main>
+          <Footer />
+          <WhatsAppFAB />
+          <AntiBotVerificationModal />
+        </div>
+      </AntiBotProvider>
     </CMSProvider>
   );
 }

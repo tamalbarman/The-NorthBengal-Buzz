@@ -4,6 +4,7 @@ export const teaProductsData = [
     title: 'Original Darjeeling Loose Leaf Tea',
     description: 'Handpicked whole-leaf tea from high-altitude Darjeeling tea estates. Features famous natural muscatel aroma and rich champagne amber brew.',
     price: '₹499',
+    numericPrice: 499,
     weight: '/ 250g',
     category: 'First Flush Premium',
     categoryIcon: 'fas fa-sun text-orange',
@@ -18,6 +19,7 @@ export const teaProductsData = [
     title: 'Pure Himalayan Milk Tea Leaf (CTC)',
     description: 'Specially crafted strong CTC tea leaf grains for milk tea lovers. Delivers rich malty flavor, dark reddish color, and irresistible morning freshness.',
     price: '₹299',
+    numericPrice: 299,
     weight: '/ 500g',
     category: 'Strong Kadak Brew',
     categoryIcon: 'fas fa-mug-hot text-red',
@@ -32,6 +34,7 @@ export const teaProductsData = [
     title: 'Himalayan Whole Leaf Green Tea',
     description: 'Naturally grown antioxidant-rich green tea from Kalimpong gardens. Boosts immunity, aids digestion, and rejuvenates your everyday routine.',
     price: '₹399',
+    numericPrice: 399,
     weight: '/ 200g',
     category: 'Organic Orthodox',
     categoryIcon: 'fas fa-spa text-green',
@@ -40,5 +43,20 @@ export const teaProductsData = [
     badgeClass: 'badge-green',
     image: '/assets/images/darjeeling-tea.png',
     highlights: ['Rich Antioxidants', 'Zero Bitterness', 'Natural Detox']
+  },
+  {
+    id: 'white-tea-tips',
+    title: 'Imperial Darjeeling Silver Needle White Tea',
+    description: 'The rarest single-origin sun-dried silvery buds from Kurseong hills. Delicate floral nectar, zero astringency, and supreme wellness antioxidants.',
+    price: '₹699',
+    numericPrice: 699,
+    weight: '/ 100g',
+    category: 'Rare Silver Tips',
+    categoryIcon: 'fas fa-gem text-teal',
+    badgeText: 'Rare Reserve',
+    badgeIcon: 'fas fa-crown',
+    badgeClass: 'badge-gold',
+    image: '/assets/images/darjeeling-tea.png',
+    highlights: ['Pure Leaf Buds', 'Unfermented', 'Velvety Finish']
   }
 ];

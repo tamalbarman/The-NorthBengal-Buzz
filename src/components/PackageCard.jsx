@@ -1,9 +1,10 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { SITE_CONFIG } from '../config/siteConfig';
+import { useAntiBot } from '../context/AntiBotContext';
 
 const PackageCard = ({ pkg }) => {
   const cardRef = useRef(null);
+  const { openVerifiedWhatsApp } = useAntiBot();
 
   const handleMouseMove = (e) => {
     if (!cardRef.current) return;
@@ -28,7 +29,11 @@ const PackageCard = ({ pkg }) => {
     : null;
 
   const whatsappMessage = `Hi! I want to inquire about the ${pkg.title} package (${pkg.price}).`;
-  const whatsappUrl = SITE_CONFIG.getWhatsAppUrl(whatsappMessage);
+
+  const handleWhatsAppClick = (e) => {
+    e.preventDefault();
+    openVerifiedWhatsApp(whatsappMessage);
+  };
 
   return (
     <div
@@ -53,19 +58,24 @@ const PackageCard = ({ pkg }) => {
       </div>
 
       <div className="content">
-        <h3>{pkg.title}</h3>
-        <p>{pkg.description}</p>
-        
-        <div className="meta-info">
-          <span><i className="far fa-clock"></i> {pkg.duration}</span>
-          <span><i className={pkg.ratingIcon || "fas fa-star text-yellow"}></i> {pkg.rating}</span>
+        <div className="card-top-meta">
+          <span className="duration">
+            <i className="fas fa-clock"></i> {pkg.duration}
+          </span>
+          <span className="rating">
+            <i className="fas fa-star text-yellow"></i> {pkg.rating || '4.9 (12)'}
+          </span>
         </div>
 
-        {/* Clean Single Pricing Block */}
-        <div className="price-container">
-          {hasDiscount && originalPriceFormatted ? (
+        <h3 className="card-title">{pkg.title}</h3>
+        <p className="card-desc">{pkg.description}</p>
+
+        <div className="pricing-container">
+          {hasDiscount ? (
             <div className="price-row">
-              <span className="orig-price-strike"><del>{originalPriceFormatted}</del></span>
+              <span className="original-strike-price">
+                <del>{originalPriceFormatted}</del>
+              </span>
               <span className="final-price-tag">{pkg.price}</span>
               <span className="price-sub">/ person</span>
             </div>
@@ -79,15 +89,15 @@ const PackageCard = ({ pkg }) => {
 
         <div className="card-btn-row">
           <Link to={`/book?package=${pkg.id}`} className="btn btn-primary">Book Now</Link>
-          <a
-            href={whatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            type="button"
+            onClick={handleWhatsAppClick}
             className="btn-whatsapp-icon"
-            title="Ask Owner on WhatsApp"
+            title="Verify & Ask Owner on WhatsApp"
+            aria-label="Ask Owner on WhatsApp"
           >
             <i className="fab fa-whatsapp"></i>
-          </a>
+          </button>
         </div>
       </div>
     </div>

@@ -15,7 +15,10 @@ const AdminPage = () => {
     rejectVisitorMedia,
     isAdminLoggedIn,
     loginAdmin,
-    logoutAdmin
+    logoutAdmin,
+    isDefaultPassword,
+    updateAdminPassword,
+    resetAdminPassword
   } = useCMS();
 
   // Auth State
@@ -52,7 +55,7 @@ const AdminPage = () => {
     setAuthError('');
     const success = await loginAdmin(passwordInput);
     if (!success) {
-      setAuthError('Invalid Admin Password. (Default password: admin123)');
+      setAuthError('Invalid Admin Password. If not changed, default password is: admin123');
     } else {
       setPasswordInput('');
     }
@@ -63,22 +66,30 @@ const AdminPage = () => {
     setSecurityError('');
     setSecuritySuccess('');
 
-    if (currentPwd !== 'admin123' && currentPwd !== 'admin') {
-      setSecurityError('Current password entered is incorrect.');
-      return;
-    }
-    if (newPwd.length < 6) {
-      setSecurityError('New password must be at least 6 characters long.');
+    const res = updateAdminPassword(currentPwd, newPwd);
+    if (!res.success) {
+      setSecurityError(res.message);
       return;
     }
 
-    setSecuritySuccess('Admin Security Credentials Updated Successfully!');
+    setSecuritySuccess(res.message);
     setCurrentPwd('');
     setNewPwd('');
     setTimeout(() => {
       setShowSecurityModal(false);
       setSecuritySuccess('');
-    }, 2500);
+    }, 2000);
+  };
+
+  const handleResetPassword = () => {
+    if (window.confirm('Are you sure you want to reset the admin password back to default (admin123)?')) {
+      const res = resetAdminPassword();
+      setSecuritySuccess(res.message);
+      setSecurityError('');
+      setTimeout(() => {
+        setSecuritySuccess('');
+      }, 2500);
+    }
   };
 
   // Package Form handlers
@@ -180,14 +191,31 @@ const AdminPage = () => {
           <i className="fas fa-sliders-h text-teal"></i>
           <span>The NorthBengal Buzz <strong>CMS Admin</strong></span>
         </div>
-        <div className="user-profile">
-          <span className="admin-badge"><i className="fas fa-shield-alt"></i> Administrator</span>
+        <div className="user-profile" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          {isDefaultPassword ? (
+            <span
+              className="admin-badge text-warning"
+              onClick={() => setShowSecurityModal(true)}
+              style={{ cursor: 'pointer', background: 'rgba(245, 166, 35, 0.15)', border: '1px solid #f5a623' }}
+              title="Click to change default password"
+            >
+              <i className="fas fa-triangle-exclamation"></i> Using Default Password
+            </span>
+          ) : (
+            <span
+              className="admin-badge text-green"
+              onClick={() => setShowSecurityModal(true)}
+              style={{ cursor: 'pointer', background: 'rgba(16, 185, 129, 0.15)', border: '1px solid #10b981' }}
+              title="Custom password secured"
+            >
+              <i className="fas fa-lock"></i> Vault Secured
+            </span>
+          )}
           <button
             onClick={() => setShowSecurityModal(true)}
             className="btn btn-sm btn-outline-light"
-            style={{ marginRight: '1rem' }}
           >
-            <i className="fas fa-key"></i> Security
+            <i className="fas fa-key"></i> Security Settings
           </button>
           <button onClick={logoutAdmin} className="btn btn-sm btn-outline-danger">
             <i className="fas fa-power-off"></i> Logout
@@ -479,8 +507,28 @@ const AdminPage = () => {
         <div className="modal-backdrop" onClick={() => setShowSecurityModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <h3><i className="fas fa-key text-teal"></i> Admin Password Security</h3>
+              <h3><i className="fas fa-shield-halved text-teal"></i> Admin Security & Vault</h3>
               <button className="close-btn" onClick={() => setShowSecurityModal(false)}>&times;</button>
+            </div>
+
+            <div style={{ marginBottom: '1.5rem' }}>
+              {isDefaultPassword ? (
+                <div className="alert alert-warning" style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem 1.4rem' }}>
+                  <i className="fas fa-triangle-exclamation text-yellow" style={{ fontSize: '1.8rem' }}></i>
+                  <div>
+                    <strong>Default Password Active:</strong>
+                    <p style={{ margin: 0, fontSize: '1.2rem' }}>You are currently using the default password (<code>admin123</code>). Update below for enhanced security.</p>
+                  </div>
+                </div>
+              ) : (
+                <div className="alert alert-success" style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem 1.4rem' }}>
+                  <i className="fas fa-circle-check text-green" style={{ fontSize: '1.8rem' }}></i>
+                  <div>
+                    <strong>Custom Password Secured:</strong>
+                    <p style={{ margin: 0, fontSize: '1.2rem' }}>Your custom administrative credentials are saved and active in your local browser vault.</p>
+                  </div>
+                </div>
+              )}
             </div>
 
             {securitySuccess ? (
@@ -496,7 +544,7 @@ const AdminPage = () => {
                   <label>Current Admin Password *</label>
                   <input
                     type="password"
-                    placeholder="Current password (admin123)"
+                    placeholder={isDefaultPassword ? "Current default password (admin123)" : "Enter current password"}
                     value={currentPwd}
                     onChange={(e) => setCurrentPwd(e.target.value)}
                     required
@@ -504,23 +552,35 @@ const AdminPage = () => {
                 </div>
 
                 <div className="form-group">
-                  <label>New Admin Password *</label>
+                  <label>New Strong Password * (min 6 characters)</label>
                   <input
                     type="password"
-                    placeholder="Enter new strong password"
+                    placeholder="Enter new custom password"
                     value={newPwd}
                     onChange={(e) => setNewPwd(e.target.value)}
                     required
                   />
                 </div>
 
-                <div className="modal-actions">
-                  <button type="button" className="btn btn-secondary" onClick={() => setShowSecurityModal(false)}>
-                    Cancel
-                  </button>
-                  <button type="submit" className="btn btn-primary">
-                    Update Password
-                  </button>
+                <div className="modal-actions" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '2rem' }}>
+                  {!isDefaultPassword && (
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-outline-danger"
+                      onClick={handleResetPassword}
+                      title="Reset back to default admin123"
+                    >
+                      <i className="fas fa-undo"></i> Reset to Default
+                    </button>
+                  )}
+                  <div style={{ display: 'flex', gap: '1rem', marginLeft: 'auto' }}>
+                    <button type="button" className="btn btn-secondary" onClick={() => setShowSecurityModal(false)}>
+                      Cancel
+                    </button>
+                    <button type="submit" className="btn btn-primary">
+                      <i className="fas fa-save"></i> Save New Password
+                    </button>
+                  </div>
                 </div>
               </form>
             )}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SITE_CONFIG } from '../config/siteConfig';
+import { useAntiBot } from '../context/AntiBotContext';
 
 const CAB_RATES = {
   darjeeling: { name: 'Darjeeling Queen of Hills', dist: '70 km', dzire: 3200, sumo: 3800, innova: 4800, landrover: 5500 },
@@ -14,6 +14,7 @@ const CAB_RATES = {
 
 const CabEstimatorSection = () => {
   const todayStr = new Date().toISOString().split('T')[0];
+  const { openVerifiedWhatsApp } = useAntiBot();
 
   const [pickup, setPickup] = useState('Bagdogra Airport (IXB)');
   const [destination, setDestination] = useState('darjeeling');
@@ -41,8 +42,7 @@ const CabEstimatorSection = () => {
 📅 Travel Date: ${travelDate || 'As soon as possible'}
 💰 Estimated Fare Quote: ₹${estimatedFare.toLocaleString('en-IN')}`;
 
-    const whatsappUrl = SITE_CONFIG.getWhatsAppUrl(msg);
-    window.open(whatsappUrl, '_blank');
+    openVerifiedWhatsApp(msg);
   };
 
   return (

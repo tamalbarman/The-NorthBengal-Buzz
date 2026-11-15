@@ -12,6 +12,14 @@ A production-grade, full-stack **MERN** web application, Content Management Syst
 
 ## ✨ Features
 
+- 🗺️ **Interactive Stoppage & Destination Route Explorer**: Spot-by-spot transit guide from NJP/Bagdogra into Darjeeling, Kalimpong, Dooars, and Sandakphu without relying on Google Maps API. Explores altitudes, travel times, road types, and local culinary tips.
+- 🌤️ **Himalayan Climate & Smart Packing Advisor**: Live weather conditions for key hill stations with an interactive seasonal packing checklist featuring *Must Have* and *Recommended* gear filters and bulk actions.
+- 🧮 **Interactive Custom Trip Budget Builder**: Dynamic cost estimation for customizable days, travelers, stay tiers (*Authentic Homestay* vs. *Luxury Heritage Resort*), and add-on excursions.
+- 🍵 **Tea Sommelier & Steeping Countdown Timer**: Brewing guide for Darjeeling First Flush, Second Flush, Green Tea, and CTC Kadak Chai with an interactive steeping timer.
+- 🏔️ **Himalayan Cultural Etiquette & Pocket Phrasebook**: Practical travel etiquette (monasteries, homestays, photography) and essential Nepali/Hindi pocket phrases.
+- 🛡️ **Anti-Bot Human Verification Security Gateway**: Prevents automated web scrapers from harvesting WhatsApp phone numbers using randomized math challenge verification.
+- 🌙 **Zero-Lag Theme Toggle (Apple & Stripe Style)**: High-performance, instant (0ms) dark/light theme switching with pixel-perfect upright crescent moon and sun SVGs.
+- 🧪 **Comprehensive Automation Testing Suite**: 191 automated test assertions (`npm test`) covering data schemas, pricing algorithms, anti-bot challenges, and component integrity.
 - 🌄 **Curated Himalayan Tour Packages**: Explore hand-crafted itineraries across Darjeeling, Kalimpong, Dooars, Sikkim, Sandakphu, Tinchuley, Chatakpur, and Pelling.
 - 🏷️ **Dynamic Package Pricing & Percentage Discounts**: Admin can set original prices and discount percentages (e.g. `15% OFF`), automatically computing sale prices with strike-through original rates (`<del>₹14,999</del> ₹12,749`).
 - 🚖 **NJP & Bagdogra Airport Cab Fare Estimator**: Interactive car rental quote calculator (Dzire, Bolero, Innova Crysta, 4x4 Land Rover) for pickups from Bagdogra (IXB) & NJP Railway Station with 1-click WhatsApp booking.
@@ -64,27 +72,38 @@ The-NorthBengal-Buzz/
 │   └── assets/images/          # Optimized photos, emblems, and tea assets
 ├── index.html                  # Root HTML with Schema.org JSON-LD structured data
 ├── package.json                # React frontend dependencies & scripts
+├── tests/
+│   └── automation.test.mjs     # 191 automated test assertions for all app features
 ├── vite.config.js              # Vite bundler configuration
 └── src/
     ├── main.jsx                # Application entry point
-    ├── App.jsx                 # Route code-splitting with CMSProvider
+    ├── App.jsx                 # Route code-splitting with Providers
     ├── index.css               # Global CSS design tokens, themes & component rules
     ├── api/
     │   └── client.js           # REST API client connecting React frontend to Express API
     ├── components/
     │   ├── Navbar.jsx          # Header navigation with section shortcuts & theme switcher
+    │   ├── ThemeToggle.jsx     # Zero-lag frosted glass theme toggle with Lucide SVGs
     │   ├── QuickSearch.jsx     # Floating hero search bar
     │   ├── PackageCard.jsx     # Tour package card with discount badges & pricing
+    │   ├── HimalayanRouteMapSection.jsx # Spot-by-spot transit guide & stoppage elevation track
+    │   ├── HimalayanWeatherAdvisor.jsx  # Live climate advisor & interactive packing checklist
+    │   ├── CustomTripBudgetCalculator.jsx # Interactive trip & homestay budget builder
     │   ├── CabEstimatorSection.jsx # NJP/Bagdogra Taxi & Cab Fare Estimator
     │   ├── PermitGuideSection.jsx  # Sikkim ILP/PAP Permit requirement guide
     │   ├── AdventureAddonsSection.jsx # Rafting, Paragliding & Toy Train add-ons
+    │   ├── TeaSommelierSection.jsx # Himalayan tea sommelier guide & steeping countdown timer
+    │   ├── HimalayanCulturalGuide.jsx # Cultural etiquette rules & Nepali pocket phrasebook
     │   ├── VisitorGallerySection.jsx  # Visitor photo gallery (Max 3 cap) & HD Lightbox
     │   ├── RatingReviewSection.jsx   # Guest reviews with star rating filter pills
     │   ├── TeaCard.jsx         # Himalayan Tea store product card
+    │   ├── WhatsAppFAB.jsx     # Floating WhatsApp button with anti-bot verification
+    │   ├── AntiBotVerificationModal.jsx # Math security challenge modal to protect against bots
     │   └── Footer.jsx          # Glassmorphic footer with Admin CMS link
     ├── context/
     │   ├── CMSContext.jsx      # Global CMS context connecting Express REST API
-    │   └── ThemeContext.jsx    # Theme toggle context (Dark/Light mode)
+    │   ├── ThemeContext.jsx    # Instant zero-lag theme toggle context
+    │   └── AntiBotContext.jsx  # Human verification engine protecting WhatsApp contacts
     └── pages/
         ├── HomePage.jsx        # Landing page with hero, services, & tea store
         ├── AboutPage.jsx       # About us story & features grid
@@ -163,8 +182,8 @@ npm run preview
 
 - **Business Name**: The Northbengal Buzz
 - **Owner / Contact**: Tamal Barman
-- **WhatsApp / Phone**: `+91-74782-86972`
-- **WhatsApp Link**: [Click to chat on WhatsApp](https://wa.me/917478286972)
+- **Email (Public)**: `thenorthbengalbuzz@gmail.com`
+- **WhatsApp Support**: Protected via Anti-Bot verification gateway on the website (`+91-74782-•••••`)
 
 ---
 

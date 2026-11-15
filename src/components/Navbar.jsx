@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { useCMS } from '../context/CMSContext';
 import { SITE_CONFIG } from '../config/siteConfig';
+import ThemeToggle from './ThemeToggle';
 
 const Navbar = () => {
   const [menuActive, setMenuActive] = useState(false);
@@ -78,6 +79,15 @@ const Navbar = () => {
         <Link to="/package" className={isActive('/package') ? 'active' : ''} onClick={closeMenu}>
           package
         </Link>
+        <a href="#route-map" onClick={scrollToSection('route-map')}>
+          <i className="fas fa-map-location-dot text-gold"></i> route map
+        </a>
+        <a href="#weather-guide" onClick={scrollToSection('weather-guide')}>
+          <i className="fas fa-cloud-sun text-yellow"></i> weather
+        </a>
+        <a href="#trip-planner" onClick={scrollToSection('trip-planner')}>
+          <i className="fas fa-calculator text-teal"></i> trip planner
+        </a>
         <a href="#cabs" onClick={scrollToSection('cabs')}>
           <i className="fas fa-taxi text-yellow"></i> cabs
         </a>
@@ -99,16 +109,8 @@ const Navbar = () => {
       </nav>
 
       <div className="nav-right">
-        {/* Theme Toggle Button */}
-        <button
-          type="button"
-          className="theme-toggle-btn"
-          onClick={toggleTheme}
-          aria-label="Toggle dark and light mode theme"
-          title={theme === 'light' ? 'Switch to Dark Theme' : 'Switch to Light Theme'}
-        >
-          <i className={`fas ${theme === 'light' ? 'fa-moon' : 'fa-sun'}`}></i>
-        </button>
+        {/* Sunset / Sunrise Celestial Theme Toggle */}
+        <ThemeToggle />
 
         <button
           type="button"

@@ -8,22 +8,28 @@ import VisitorGallerySection from '../components/VisitorGallerySection';
 import CabEstimatorSection from '../components/CabEstimatorSection';
 import PermitGuideSection from '../components/PermitGuideSection';
 import AdventureAddonsSection from '../components/AdventureAddonsSection';
+import HimalayanRouteMapSection from '../components/HimalayanRouteMapSection';
+import HimalayanWeatherAdvisor from '../components/HimalayanWeatherAdvisor';
+import CustomTripBudgetCalculator from '../components/CustomTripBudgetCalculator';
+import TeaSommelierSection from '../components/TeaSommelierSection';
+import HimalayanCulturalGuide from '../components/HimalayanCulturalGuide';
 import { useCMS } from '../context/CMSContext';
+import { useAntiBot } from '../context/AntiBotContext';
 import { teaProductsData } from '../data/teaProductsData';
 import { SITE_CONFIG } from '../config/siteConfig';
 
 const HomePage = () => {
   const { packages } = useCMS();
+  const { openVerifiedWhatsApp } = useAntiBot();
   const [activeFilter, setActiveFilter] = useState('all');
 
   useEffect(() => {
     document.title = 'The Northbengal Buzz - Travel & Pure Himalayan Tea Store';
   }, []);
 
-  const featuredPackages = packages.slice(0, 6);
   const filteredPackages = activeFilter === 'all'
-    ? featuredPackages
-    : featuredPackages.filter((p) => p.category === activeFilter);
+    ? packages.slice(0, 6)
+    : packages.filter((p) => p.category === activeFilter);
 
   return (
     <div className="home-page">
@@ -83,6 +89,15 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* Interactive Stoppage & Destination Route Explorer (No Google Maps API needed) */}
+      <HimalayanRouteMapSection />
+
+      {/* Mountain Climate & Smart Seasonal Packing Advisor */}
+      <HimalayanWeatherAdvisor />
+
+      {/* Interactive Custom Trip & Homestay Budget Builder */}
+      <CustomTripBudgetCalculator />
+
       {/* NEW SERVICE 1: NJP/Bagdogra Cab & Taxi Fare Estimator */}
       <CabEstimatorSection />
 
@@ -107,25 +122,31 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* Tea Sommelier & Interactive Steeping Countdown Timer */}
+      <TeaSommelierSection />
+
       {/* Visitor Photo & Experience Gallery Section */}
       <VisitorGallerySection />
 
       {/* Guest Ratings & Reviews Moderated Section */}
       <RatingReviewSection />
 
+      {/* Himalayan Cultural Etiquette & Pocket Phrasebook */}
+      <HimalayanCulturalGuide />
+
       {/* Direct WhatsApp Callout */}
       <section className="home-offer">
         <div className="content">
           <h3>Direct WhatsApp Booking & Inquiry</h3>
           <p>Have questions about homestays, custom travel packages, cab rentals, or buying pure Darjeeling tea? Message the owners directly on WhatsApp Business.</p>
-          <a
-            href={SITE_CONFIG.getWhatsAppUrl('Hello The Northbengal Buzz! I have an enquiry regarding travel or tea products.')}
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            type="button"
+            onClick={() => openVerifiedWhatsApp('Hello The Northbengal Buzz! I have an enquiry regarding travel or tea products.')}
             className="btn btn-whatsapp"
+            title="Verify & Chat with Owners on WhatsApp"
           >
             <i className="fab fa-whatsapp"></i> Chat with Owners on WhatsApp
-          </a>
+          </button>
         </div>
       </section>
     </div>

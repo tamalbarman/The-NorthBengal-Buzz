@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useCMS } from '../context/CMSContext';
-import { SITE_CONFIG } from '../config/siteConfig';
+import { useAntiBot } from '../context/AntiBotContext';
 
 const BookPage = () => {
   const { packages } = useCMS();
+  const { openVerifiedWhatsApp } = useAntiBot();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -88,7 +89,7 @@ const BookPage = () => {
 
   const handleWhatsAppDirect = () => {
     const msg = `Hello The Northbengal Buzz!\nI want to book a trip with you.\n\n*Name:* ${formData.name || 'Guest'}\n*Phone:* ${formData.phone || 'N/A'}\n*Destination:* ${selectedPkg.title || 'Tour Package'}\n*Guests:* ${numGuests}\n*Dates:* ${formData.arrival || 'TBD'} to ${formData.leaving || 'TBD'}\n*Est. Total:* ₹${totalCost.toLocaleString('en-IN')}`;
-    window.open(SITE_CONFIG.getWhatsAppUrl(msg), '_blank');
+    openVerifiedWhatsApp(msg);
   };
 
   return (

@@ -1,17 +1,24 @@
 import React from 'react';
-import { SITE_CONFIG } from '../config/siteConfig';
+import { useAntiBot } from '../context/AntiBotContext';
 
 const WhatsAppFAB = () => {
+  const { openVerifiedWhatsApp } = useAntiBot();
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    openVerifiedWhatsApp('Hello The Northbengal Buzz! I would like to inquire about a tour package or tea products.');
+  };
+
   return (
-    <a
-      href={SITE_CONFIG.getWhatsAppUrl()}
-      target="_blank"
-      rel="noopener noreferrer"
+    <button
+      type="button"
+      onClick={handleClick}
       className="floating-whatsapp"
-      title="Direct WhatsApp Chat with Owner"
+      title="Direct WhatsApp Chat with Owner (Anti-Bot Protected)"
+      aria-label="Direct WhatsApp Chat with Owner"
     >
       <i className="fab fa-whatsapp"></i>
-    </a>
+    </button>
   );
 };
 

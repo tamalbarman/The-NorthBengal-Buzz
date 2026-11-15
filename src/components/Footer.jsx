@@ -1,8 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { SITE_CONFIG } from '../config/siteConfig';
+import { useAntiBot } from '../context/AntiBotContext';
 
 const Footer = () => {
+  const { openVerifiedWhatsApp } = useAntiBot();
+
   return (
     <footer className="footer">
       <div className="box-container">
@@ -35,19 +38,37 @@ const Footer = () => {
           <Link to="/"><i className="fas fa-angle-right"></i> Home</Link>
           <Link to="/about"><i className="fas fa-angle-right"></i> About Us</Link>
           <Link to="/package"><i className="fas fa-angle-right"></i> Tour Packages</Link>
+          <a href="/#route-map"><i className="fas fa-angle-right"></i> Himalayan Route Map</a>
           <a href="/#tea-store"><i className="fas fa-angle-right"></i> Pure Tea Store</a>
           <Link to="/book"><i className="fas fa-angle-right"></i> Book Trip</Link>
           <Link to="/admin"><i className="fas fa-user-shield"></i> Admin CMS Portal</Link>
         </div>
 
         <div className="box">
-          <h3>Contact & WhatsApp</h3>
-          <a href={SITE_CONFIG.getWhatsAppUrl()} target="_blank" rel="noopener noreferrer">
-            <i className="fab fa-whatsapp text-green"></i> {SITE_CONFIG.phone} (WhatsApp Owner)
+          <h3>Contact & Inquiries</h3>
+          {/* Protected WhatsApp Chat - Requires anti-bot human verification */}
+          <button
+            type="button"
+            className="footer-contact-link-btn"
+            onClick={() => openVerifiedWhatsApp('Hello The Northbengal Buzz! I have an inquiry about North Bengal travel & tea products.')}
+            title="Verify & Chat with Owner on WhatsApp"
+          >
+            <i className="fab fa-whatsapp text-green"></i> Direct WhatsApp (Click to Verify)
+          </button>
+          
+          {/* Publicly visible email address */}
+          <a href={`mailto:${SITE_CONFIG.email}`} title="Email Us Directly">
+            <i className="fas fa-envelope text-teal"></i> {SITE_CONFIG.email}
           </a>
-          <a href={`tel:${SITE_CONFIG.tollFree.replace(/[^0-9]/g, '')}`}><i className="fas fa-headset"></i> {SITE_CONFIG.tollFree} (Toll Free)</a>
-          <a href={`mailto:${SITE_CONFIG.email}`}><i className="fas fa-envelope"></i> {SITE_CONFIG.email}</a>
-          <a href="#"><i className="fas fa-location-dot"></i> {SITE_CONFIG.address}</a>
+
+          {/* Secure anti-bot notice */}
+          <span className="footer-anti-bot-note">
+            <i className="fas fa-shield-alt text-teal"></i> Direct phone lines protected against bots
+          </span>
+
+          <span className="footer-location-text">
+            <i className="fas fa-location-dot"></i> {SITE_CONFIG.address}
+          </span>
         </div>
 
         <div className="box">

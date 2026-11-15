@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { SITE_CONFIG } from '../config/siteConfig';
+import { useAntiBot } from '../context/AntiBotContext';
 
 const packOptionsMap = {
   'darjeeling-leaf': [
@@ -21,6 +21,8 @@ const packOptionsMap = {
 
 const TeaCard = ({ tea }) => {
   const cardRef = useRef(null);
+  const { openVerifiedWhatsApp } = useAntiBot();
+
   const options = packOptionsMap[tea.id] || [
     { label: tea.weight, price: tea.price, val: tea.weight }
   ];
@@ -44,7 +46,11 @@ const TeaCard = ({ tea }) => {
   };
 
   const whatsappMessage = `Hello The Northbengal Buzz!\nI want to buy *${tea.title}*\n*Selected Weight Pack:* ${selectedPack.label} (${selectedPack.price})\nPlease send payment & delivery details.`;
-  const whatsappUrl = SITE_CONFIG.getWhatsAppUrl(whatsappMessage);
+
+  const handleOrder = (e) => {
+    e.preventDefault();
+    openVerifiedWhatsApp(whatsappMessage);
+  };
 
   return (
     <div
@@ -98,9 +104,14 @@ const TeaCard = ({ tea }) => {
           ))}
         </div>
 
-        <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="btn btn-whatsapp tea-order-btn">
+        <button
+          type="button"
+          onClick={handleOrder}
+          className="btn btn-whatsapp tea-order-btn"
+          title="Verify & Order on WhatsApp"
+        >
           <i className="fab fa-whatsapp"></i> Order {selectedPack.label} on WhatsApp
-        </a>
+        </button>
       </div>
     </div>
   );

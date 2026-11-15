@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SITE_CONFIG } from '../config/siteConfig';
+import { useAntiBot } from '../context/AntiBotContext';
 
 const PERMIT_DATA = {
   nathula: {
@@ -42,6 +42,7 @@ const PERMIT_DATA = {
 const PermitGuideSection = () => {
   const [selectedDest, setSelectedDest] = useState('nathula');
   const info = PERMIT_DATA[selectedDest];
+  const { openVerifiedWhatsApp } = useAntiBot();
 
   const handlePermitInquiry = () => {
     const msg = `Hi! I need help with Sikkim/Border Travel Permits for:
@@ -50,8 +51,7 @@ const PermitGuideSection = () => {
 📋 Documents I have: Voter ID / Passport & Photos
 Please guide me on permit processing and booking.`;
 
-    const whatsappUrl = SITE_CONFIG.getWhatsAppUrl(msg);
-    window.open(whatsappUrl, '_blank');
+    openVerifiedWhatsApp(msg);
   };
 
   return (

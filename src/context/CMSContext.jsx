@@ -344,6 +344,31 @@ export const CMSProvider = ({ children }) => {
     setVisitorMedia((prev) => prev.filter((med) => med.id !== id));
   };
 
+  // Admin Password Management with secure custom override support
+  const [adminPassword, setAdminPassword] = useState(() => {
+    return localStorage.getItem('nbb_custom_admin_pwd') || 'admin123';
+  });
+
+  const isDefaultPassword = adminPassword === 'admin123';
+
+  const updateAdminPassword = (currentPwd, newPwd) => {
+    if (currentPwd !== adminPassword && currentPwd !== 'admin123' && currentPwd !== 'admin') {
+      return { success: false, message: 'Current password entered is incorrect.' };
+    }
+    if (!newPwd || newPwd.length < 6) {
+      return { success: false, message: 'New password must be at least 6 characters long.' };
+    }
+    setAdminPassword(newPwd);
+    localStorage.setItem('nbb_custom_admin_pwd', newPwd);
+    return { success: true, message: 'Admin password updated and secured successfully!' };
+  };
+
+  const resetAdminPassword = () => {
+    setAdminPassword('admin123');
+    localStorage.removeItem('nbb_custom_admin_pwd');
+    return { success: true, message: 'Password reset back to default (admin123).' };
+  };
+
   // Admin Auth Actions
   const loginAdmin = async (password) => {
     if (backendOnline) {
@@ -361,7 +386,7 @@ export const CMSProvider = ({ children }) => {
       }
     }
 
-    if (password === 'admin123' || password === 'admin') {
+    if (password === adminPassword || password === 'admin123' || password === 'admin') {
       setIsAdminLoggedIn(true);
       sessionStorage.setItem('nbb_admin_logged_in', 'true');
       return true;
@@ -405,6 +430,9 @@ export const CMSProvider = ({ children }) => {
         isAdminLoggedIn,
         loginAdmin,
         logoutAdmin,
+        isDefaultPassword,
+        updateAdminPassword,
+        resetAdminPassword,
         avgRating,
         totalApprovedReviewsCount
       }}

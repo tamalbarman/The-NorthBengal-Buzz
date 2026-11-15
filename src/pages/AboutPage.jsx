@@ -1,5 +1,5 @@
 import React from 'react';
-import { SITE_CONFIG } from '../config/siteConfig';
+import { useAntiBot } from '../context/AntiBotContext';
 
 const testimonials = [
   {
@@ -41,6 +41,7 @@ const testimonials = [
 ];
 
 const AboutPage = () => {
+  const { openVerifiedWhatsApp } = useAntiBot();
   return (
     <div className="about-page">
       {/* Page Header Banner */}
@@ -92,14 +93,14 @@ const AboutPage = () => {
             </div>
 
             <div className="btn-group" style={{ marginTop: '3.5rem' }}>
-              <a
-                href={SITE_CONFIG.getWhatsAppUrl('Hello The Northbengal Buzz! I want to chat with the owners.')}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                type="button"
+                onClick={() => openVerifiedWhatsApp('Hello The Northbengal Buzz! I want to chat with the owners.')}
                 className="btn btn-whatsapp-large"
+                title="Verify & Chat with Owners on WhatsApp"
               >
                 <i className="fab fa-whatsapp"></i> Chat with Owners on WhatsApp
-              </a>
+              </button>
             </div>
           </div>
 
@@ -122,7 +123,7 @@ const AboutPage = () => {
       </section>
 
       {/* Reviews Section */}
-      <section className="reviews" style={{ background: '#f1f5f9' }}>
+      <section className="reviews" style={{ background: 'var(--light-bg)' }}>
         <div className="section-title">
           <span className="sub-heading"><i className="fas fa-star text-yellow"></i> Verified Guest Feedback</span>
           <h2 className="heading-title">What Our Guests Say</h2>
@@ -135,7 +136,7 @@ const AboutPage = () => {
               key={index}
               className="testimonial-card tilt-card"
               style={{
-                background: 'var(--white)',
+                background: 'var(--bg-card)',
                 padding: '3rem',
                 borderRadius: 'var(--radius-md)',
                 border: '1px solid var(--border-light)',

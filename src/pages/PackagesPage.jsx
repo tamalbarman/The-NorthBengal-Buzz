@@ -119,7 +119,7 @@ const PackagesPage = () => {
             ))}
           </div>
         ) : (
-          <div style={{ textAlign: 'center', padding: '4rem 2rem', background: '#fff', borderRadius: '20px', border: '1px solid #e2e8f0' }}>
+          <div style={{ textAlign: 'center', padding: '4rem 2rem', background: 'var(--bg-card)', borderRadius: '20px', border: '1px solid var(--border-light)' }}>
             <i className="fas fa-compass-drafting text-teal" style={{ fontSize: '4rem', marginBottom: '1.5rem' }}></i>
             <h3>No packages match your search criteria.</h3>
             <p style={{ fontSize: '1.5rem', color: 'var(--text-muted)', marginTop: '0.8rem' }}>Try clearing your search query or selecting a different category filter.</p>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { SITE_CONFIG } from '../config/siteConfig';
+import { useAntiBot } from '../context/AntiBotContext';
 
 const ADVENTURES = [
   {
@@ -53,6 +53,8 @@ const ADVENTURES = [
 ];
 
 const AdventureAddonsSection = () => {
+  const { openVerifiedWhatsApp } = useAntiBot();
+
   const handleInquiry = (adventure) => {
     const msg = `Hi! I want to inquire & book the adventure activity:
 🏔️ Activity: ${adventure.title}
@@ -61,8 +63,7 @@ const AdventureAddonsSection = () => {
 ⏱️ Duration: ${adventure.duration}
 Please check availability for my trip dates!`;
 
-    const whatsappUrl = SITE_CONFIG.getWhatsAppUrl(msg);
-    window.open(whatsappUrl, '_blank');
+    openVerifiedWhatsApp(msg);
   };
 
   return (

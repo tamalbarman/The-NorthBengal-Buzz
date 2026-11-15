@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "eslint .",
+    "test": "node tests/automation.test.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
